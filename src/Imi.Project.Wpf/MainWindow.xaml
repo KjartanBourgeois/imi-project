@@ -1,0 +1,77 @@
+﻿<Window x:Class="Imi.Project.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        mc:Ignorable="d"
+        Title="Recipes" Height="450" Width="1231" Loaded="Window_Loaded" Background="SteelBlue">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="75"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+                <ColumnDefinition Width="500"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="lstRecipes" Grid.Column="0" Margin="5" SelectionChanged="lstRecipes_SelectionChanged" />
+            <Grid Grid.Column="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Naam:"></Label>
+                <Label Grid.Row="1" Grid.Column="0" Content="Categorie:"></Label>
+                <Label Grid.Row="2" Grid.Column="0" Content="Keuken:"></Label>
+                <Label Grid.Row="3" Grid.Column="0" Content="Thema:"></Label>
+                <Label Grid.Row="4" Grid.Column="0" Content="Aantal Personen:"></Label>
+                <Label Grid.Row="5" Grid.Column="0" Content="Website:"></Label>
+
+                <Label Grid.Row="0" Grid.Column="1" x:Name="lblName"></Label>
+                <Label Grid.Row="1" Grid.Column="1" x:Name="lblCategory"></Label>
+                <Label Grid.Row="2" Grid.Column="1" x:Name="lblKitchen"></Label>
+                <Label Grid.Row="3" Grid.Column="1" x:Name="lblTheme"></Label>
+                <Label Grid.Row="4" Grid.Column="1" x:Name="lblNumerOfPersons"></Label>
+                <Label Grid.Row="6" Grid.Column="0" x:Name="lblWebsite"></Label>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Afbeelding:"></Label>
+
+                <Image Grid.Row="1" x:Name="imgRecipe"></Image>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Click="btnNew_Click" x:Name="btnNew" Margin="0,10"  Grid.Row="0"  Content="Nieuw"></Button>
+                <Button Click="btnUpdate_Click" x:Name="btnUpdate" Margin="0,10" Grid.Row="1" Content="Bewerk"></Button>
+                <Button Click="btnDelete_Click" x:Name="btnDelete" Margin="0,10" Grid.Row="2" Content="Verwijder"></Button>
+                <Button Click="btnRefresh_Click" x:Name="btnRefresh" Margin="0,10"  Grid.Row="3"  Content="Herlaad lijst"></Button>
+            </Grid>
+        </Grid>
+
+        <Label Grid.Row="2" x:Name="lblFeedback" ></Label>
+    </Grid>
+</Window>

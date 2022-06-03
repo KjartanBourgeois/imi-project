@@ -1,0 +1,113 @@
+﻿@page "/recipes"
+@inject IRecipeService service;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject NavigationManager UriHelper;
+
+<h2>Recipe</h2>
+<div class="mt-3">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger">
+            @error
+        </div>
+    }
+
+    <button class="btn btn-primary" @onclick=@AddNew>Create new recipe</button>
+
+    @if (currentRecipe == null)
+    {
+        <RecipeList RecipeListItems="recipeListItems"
+                OnEditClick="EditRecipe"
+                OnDeleteClick="DeleteRecipe">
+        </RecipeList>
+    }
+    else
+    {
+        <Recipe Item="currentRecipe"
+            OnSaveClick="SaveRecipe"
+            OnCancelClick="ShowList">
+        </Recipe>
+    }
+</div>
+
+@code {
+    private List<RecipeResponseDto> recipeListItems = new List<RecipeResponseDto>();
+    private RecipeResponseDto currentRecipe;
+    private string error;
+    private string token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowList();
+    }
+
+    public async Task ShowList()
+    {
+        var result = await service.GetAllRecipes();
+        recipeListItems = result.ToList();
+        this.currentRecipe = null;
+    }
+
+    private void AddNew()
+    {
+        UriHelper.NavigateTo("create");
+    }
+
+    public async Task AddRecipe()
+    {
+        this.currentRecipe = new RecipeResponseDto();
+    }
+
+    public async Task EditRecipe(RecipeResponseDto item)
+    {
+        this.currentRecipe = await service.GetRecipe(item.Id);
+    }
+
+    public async Task SaveRecipe(RecipeResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        var recipeRequestDto = new RecipeRequestDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                CategoryId = item.Category.Id,
+                KitchenId = item.Kitchen.Id,
+                ThemeId = item.Theme.Id,
+                Instructions = item.Instructions,
+                Image = item.Image,
+                WebsiteLink = new Uri(item.WebsiteLink.ToString()),
+                NumberOfPersons = item.NumberOfPersons
+            };
+        try
+        {
+            if (currentRecipe.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+                recipeRequestDto.Instructions = "N/A";
+                await service.AddRecipe(recipeRequestDto, token);
+            }
+            else
+            {
+                await service.UpdateRecipe(recipeRequestDto, token);
+            }
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+    public async Task DeleteRecipe(RecipeResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        try
+        {
+            await service.DeleteRecipe(item.Id, token);
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+}

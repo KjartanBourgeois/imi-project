@@ -1,0 +1,22 @@
+﻿<EditForm Model="@Kitchen" OnValidSubmit="@(e => OnSaveClick.InvokeAsync(Kitchen))">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name: </label>
+        <InputText id="name" @bind-Value="Kitchen.Name" class="form-control" />
+        <ValidationMessage For="@(() => Kitchen.Name)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-warning" @onclick="OnCancelClick">Cancel</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public KitchenResponseDto Kitchen { get; set; }
+    [Parameter]
+    public EventCallback<KitchenResponseDto> OnSaveClick { get; set; }
+    [Parameter]
+    public EventCallback OnCancelClick { get; set; }
+}

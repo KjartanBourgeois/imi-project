@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.SettingsPage">
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource MainStackLayout}">
+            <TableView Intent="Settings">
+                <TableRoot>
+                    <TableSection>
+                        <EntryCell Text="{Binding UserName}" Label="Gebruikersnaam:" Placeholder="Gebruikersnaam" Keyboard="Default"></EntryCell>
+                        <EntryCell Text="{Binding Email}" Label="Email:" Placeholder="Email" Keyboard="Email"></EntryCell>
+                        <SwitchCell Text="Notificaties:" On="{Binding EnableNotifications}"></SwitchCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+            <Button Command="{Binding Save}" Text="Bewaar Instelling" Style="{StaticResource PrimaryButton}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

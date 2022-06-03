@@ -1,0 +1,22 @@
+﻿<EditForm Model="@Theme" OnValidSubmit="@(e => OnSaveClick.InvokeAsync(Theme))">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name: </label>
+        <InputText id="name" @bind-Value="Theme.Name" class="form-control" />
+        <ValidationMessage For="@(() => Theme.Name)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-warning" @onclick="OnCancelClick">Cancel</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public ThemeResponseDto Theme { get; set; }
+    [Parameter]
+    public EventCallback<ThemeResponseDto> OnSaveClick { get; set; }
+    [Parameter]
+    public EventCallback OnCancelClick { get; set; }
+}

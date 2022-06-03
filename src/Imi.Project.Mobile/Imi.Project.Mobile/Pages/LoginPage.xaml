@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.LoginPage"
+             xmlns:local="clr-namespace:Imi.Project.Mobile.Actions"
+             BackgroundColor="{StaticResource ColorSecundary}">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" Style="{StaticResource MainStackLayout}">
+            <Label x:Name="lblUsername" Text="Gebruikersnaam" TextColor="{StaticResource ColorAccent}" FontSize="20"></Label>
+            <Entry Text="{Binding Email}" Placeholder="Vul hier uw gebruikersnaam in"></Entry>
+            <Label x:Name="lblPassword" Text="Wachtwoord" TextColor="{StaticResource ColorAccent}" FontSize="20"></Label>
+            <Grid>
+                <Entry Text="{Binding Password}" x:Name="entryPassword" Placeholder="Vul hier uw wachtwoord in" Keyboard="Text" IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}"></Entry>
+                <ImageButton VerticalOptions="Center" Margin="0,0,10,0" HeightRequest="20" HorizontalOptions="End" Source="ic_eye_hide">
+                    <ImageButton.Triggers>
+                        <EventTrigger Event="Clicked">
+                            <local:ShowPasswordTriggerAction ShowIcon="ic_eye" HideIcon="ic_eye_hide" x:Name="ShowPasswordActualTrigger" />
+                        </EventTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+            </Grid>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,10">
+                <Button Command="{Binding Login}" Text="Login" Style="{StaticResource SecundaryButton}"></Button>
+                <Button Command="{Binding GoToRegisterPage}" x:Name="btnRegister" Text="Registreer" Style="{StaticResource SecundaryButton}"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

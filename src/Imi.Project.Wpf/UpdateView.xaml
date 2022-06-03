@@ -1,0 +1,50 @@
+﻿<Window x:Class="Imi.Project.Wpf.UpdateView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        mc:Ignorable="d"
+        Title="Bewerk" Height="547" Width="800" Loaded="Window_Loaded" Background="SteelBlue">
+
+    <StackPanel Margin="40" Width="600" VerticalAlignment="Center">
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Naam :"></Label>
+            <TextBox x:Name="txtRecipeName" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label x:Name="lblCurrentCategory" Content="Huidige Categorie :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Kies de juiste Categorie :"></Label>
+            <ComboBox x:Name="cmbCategory" Width="250" ></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label x:Name="lblCurrentKitchen" Content="Huidige Keuken :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Kies de juiste Keuken :"></Label>
+            <ComboBox x:Name="cmbKitchen" Width="250"></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label x:Name="lblCurrentTheme" Content="Huidige Thema :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Kies het juiste Thema :"></Label>
+            <ComboBox x:Name="cmbTheme" Width="250"></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Aantal personen :"></Label>
+            <TextBox x:Name="txtNumberOfPersons" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Afbeelings link :"></Label>
+            <TextBox x:Name="txtImageLink" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Website link :"></Label>
+            <TextBox x:Name="txtWebsiteLink" Width="250"></TextBox>
+        </StackPanel>
+        <Button x:Name="btnUpdate" Margin="10" Content="Bewerk" Height="30" Width="288" Click="btnUpdate_Click"></Button>
+    </StackPanel>
+</Window>

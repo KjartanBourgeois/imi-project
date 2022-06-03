@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Thema's Page";
+}
+<div class="text-center my-5">
+    <h2>Thema's</h2>
+</div>
+
+
+<div id="app" class="row">
+
+    <div class="col-md-12">
+        <div class="alert alert-info" v-if="feedback">
+            {{feedback}}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <ul class="list-group">
+            <li v-for="theme in themes" v-on:click="getThemeDetail(theme)" class="list-group-item">
+                <h5>{{theme.name}}</h5>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-primary my-3" v-on:click="toNewMode()" v-bind:disabled="isUpdate">Nieuw</button>
+        <button class="btn btn-warning my-3" v-on:click="toEditMode()" v-bind:disabled="isNew">Update</button>
+        <button class="btn btn-primary my-1" v-on:click="createTheme()">Voeg nieuw thema toe</button> <br />
+        <button class="btn btn-warning my-1" v-on:click="updateTheme()">Update het thema</button> <br />
+        <button class="btn btn-danger my-1" v-on:click="deleteTheme()">Verwijder het thema</button> <br />
+    </div>
+    <div class="col-md-3" v-if="selectedTheme">
+        <label class="font-weight-bold">Naam Thema :</label>
+        <input class="form-control" v-bind:readonly="isReadOnly" v-model="selectedTheme.name"/>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+
+<script>
+    var apiUrl = 'https://localhost:5001/api/Themes';
+    const token = localStorage.getItem('jwtToken');
+    const config = {headers: { Authorization: `Bearer ${token}` }};
+    var app = new Vue({
+        el: '#app',
+        data:{
+            themes: [],
+            selectedTheme: null,
+            isReadOnly: true,
+            isNew: false,
+            isUpdate: false,
+            feedback: ""
+        },
+        created: function(){
+            var self =this;
+            self.fetchThemes();
+        },
+        methods:{
+            fetchThemes: function(){
+                var self = this;
+                return axios.get(apiUrl, config)
+                    .then(res => {
+                        self.themes = res.data;
+                    });
+            },
+            getThemeDetail: function(theme){
+                var self = this;
+                self.selectedTheme = theme;
+                window.scrollTo(0,0);
+            },
+            toNewMode: function(){
+                var self = this;
+                self.isReadOnly = false;
+                self.isNew = true;
+                self.selectedTheme = {};
+            },
+            toEditMode: function(){
+                var self = this;
+                self.isUpdate = true;
+                self.isReadOnly = false;
+            },
+            createTheme: async function(){
+                var self = this;
+                var dto = {
+                    Id: self.selectedTheme.id,
+                    Name: self.selectedTheme.name,
+                };
+                await axios.post(apiUrl, dto, config)
+                    .then(function(response){
+                        self.feedback = `Thema ${self.selectedTheme.name} is aangemaakt`;
+                    })
+                    .catch(function (error){
+                        console.log(error.response);
+                    })
+                    .then(function() {
+                        self.isReadOnly = true;
+                        self.isNew = false;
+                        setTimeout(function () {self.feedback = null; }, 3000);
+                    });
+            },
+            updateTheme: async function(){
+                var self = this;
+                var dto = {
+                    Id: self.selectedTheme.id,
+                    Name: self.selectedTheme.name,
+                };
+                await axios.put(apiUrl, dto, config)
+                    .then(function(response){
+                        self.feedback = `Thema ${self.selectedTheme.name} is aangepast`;
+                    })
+                    .catch(function (error){
+                        console.log(error.response);
+                    })
+                    .then(function() {
+                        self.isReadOnly = true;
+                        self.isUpdate = false;
+                        setTimeout(function () {self.feedback = null; }, 3000);
+                    });
+            },
+            deleteTheme: async function(){
+                var self = this;
+                var url = `${apiUrl}/${self.selectedTheme.id}`;
+                await axios.delete(url, config)
+                      .then(function(response){
+                        self.feedback = `Thema ${self.selectedTheme.name} is verwijderd`
+                      })
+                      .catch(function (error){
+                        console.log(error.response);
+                      })
+                      .then(function() {
+                        self.isreadonly = true;
+                        settimeout(function () {self.feedback = null; }, 3000);
+                    });
+            }
+
+
+        }
+
+    });
+
+</script>
+}

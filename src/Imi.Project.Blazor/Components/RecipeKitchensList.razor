@@ -1,0 +1,36 @@
+﻿<button class="btn btn-primary" @onclick="OnAddClick">Add Kitchen</button>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in RecipeKitchenListItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td><button class="btn btn-warning" @onclick="e => OnEditClick.InvokeAsync(item)">Edit</button></td>
+                <td><button class="btn btn-danger" @onclick="e => OnDeleteClick.InvokeAsync(item)">Delete</button></td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter]
+    public IEnumerable<KitchenResponseDto> RecipeKitchenListItems { get; set; }
+
+    [Parameter]
+    public EventCallback OnAddClick { get; set; }
+
+    [Parameter]
+    public EventCallback<KitchenResponseDto> OnEditClick { get; set; }
+
+    [Parameter]
+    public EventCallback<KitchenResponseDto> OnDeleteClick { get; set; }
+}

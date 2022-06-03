@@ -1,0 +1,40 @@
+﻿<Window x:Class="Imi.Project.Wpf.DeleteView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        mc:Ignorable="d"
+        Title="Verwijder" Height="450" Width="800" Background="SteelBlue" Loaded="Window_Loaded">
+    <StackPanel Margin="40" Width="600" VerticalAlignment="Center">
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Naam :"></Label>
+            <Label x:Name="lblRecipeName" FontWeight="Bold" Content="Naam :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Huidige Categorie :"></Label>
+            <Label x:Name="lblCurrentCategory" FontWeight="Bold" Content="Huidige Categorie :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label  Content="Huidige Keuken :"></Label>
+            <Label x:Name="lblCurrentKitchen" FontWeight="Bold" Content="Huidige Keuken :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label  Content="Huidige Thema :"></Label>
+            <Label x:Name="lblCurrentTheme" FontWeight="Bold" Content="Huidige Thema :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Aantal personen :"></Label>
+            <Label x:Name="lblNumberOfPersons" FontWeight="Bold" Content="Aantal personen :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Afbeelings link :"></Label>
+            <Label x:Name="lblImageLink" FontWeight="Bold" Content="Afbeelings link :"></Label>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Website link :"></Label>
+            <Label x:Name="lblWebsiteLink" FontWeight="Bold" Content="Website link :"></Label>
+        </StackPanel>
+        <Button BorderBrush="Black" Background="Red" FontWeight="Bold" x:Name="btnDelete" Margin="10" Content="Verwijder" Height="30" Width="288" Click="btnDelete_Click"></Button>
+    </StackPanel>
+</Window>

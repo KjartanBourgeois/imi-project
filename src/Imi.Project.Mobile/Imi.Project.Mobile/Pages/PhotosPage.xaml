@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.PhotosPage"
+             Title="Mijn Foto's" BackgroundColor="{StaticResource ColorSecundary}">
+    <ContentPage.Content>
+        <StackLayout Margin="10" Style="{StaticResource MainStackLayout}">
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

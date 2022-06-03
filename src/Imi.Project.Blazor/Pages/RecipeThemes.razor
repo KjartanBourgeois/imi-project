@@ -1,0 +1,97 @@
+﻿@page "/recipethemes"
+@inject IThemeService service;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+
+<h2>RecipeThemes</h2>
+
+<div class="mt-3">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger">
+            @error
+        </div>
+    }
+
+    @if (currentTheme == null)
+    {
+        <RecipeThemesList RecipeThemeListItems="recipeThemeListItems"
+                      OnAddClick="AddTheme"
+                      OnEditClick="EditTheme"
+                      OnDeleteClick="DeleteTheme">
+        </RecipeThemesList>
+    }
+    else
+    {
+        <RecipeTheme Theme="currentTheme"
+                 OnSaveClick="SaveTheme"
+                 OnCancelClick="ShowList">
+        </RecipeTheme>
+    }
+</div>
+
+@code {
+    private List<ThemeResponseDto> recipeThemeListItems = new List<ThemeResponseDto>();
+    private ThemeResponseDto currentTheme;
+    private string error;
+    private string token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowList();
+    }
+
+    public async Task ShowList()
+    {
+        var result = await service.GetAllThemes();
+        recipeThemeListItems = result.ToList();
+        this.currentTheme = null;
+    }
+
+    public async Task AddTheme()
+    {
+        this.currentTheme = new ThemeResponseDto();
+    }
+
+    public async Task EditTheme(ThemeResponseDto item)
+    {
+        this.currentTheme = await service.GetTheme(item.Id);
+    }
+
+    public async Task SaveTheme(ThemeResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        var themeRequestDto = new ThemeRequestDto();
+        themeRequestDto.Name = item.Name;
+        try
+        {
+            if (currentTheme.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+                await service.AddTheme(themeRequestDto, token);
+            }
+            else
+            {
+                await service.UpdateTheme(themeRequestDto, token);
+            }
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+    public async Task DeleteTheme(ThemeResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        try
+        {
+            await service.DeleteTheme(item.Id, token);
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+}

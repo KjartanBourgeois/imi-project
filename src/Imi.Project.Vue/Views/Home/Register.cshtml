@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Register Page";
+}
+
+<div id="app">
+    <h2>Registreer</h2>
+    <form>
+        <div class="form-group">
+            <label for="firstname">Voornaam</label>
+            <input v-model="firstname" type="text" id="firstname" class="form-control" required placeholder="Voornaam">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Achternaam</label>
+            <input v-model="lastname" type="text" id="lastname" class="form-control" required placeholder="Achternaam">
+        </div>
+        <div class="form-group">
+            <label for="username">Gebruikersnaam</label>
+            <input v-model="username" type="text" id="username" class="form-control" required placeholder="Gebruikersnaam">
+        </div>
+        <div class="form-group">
+            <label for="dob">Geboortedatum</label>
+            <input v-model="DOB" type="date" id="dob" class="form-control" required placeholder="Gebruikersnaam">
+        </div>
+        <div class="form-group">
+            <label for="emailadress">Email</label>
+            <input v-model="email" type="email" class="form-control" id="emailadress" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="password">Wachtwoord</label>
+            <input v-model="password" type="password" class="form-control" id="password" placeholder="Wachtwoord">
+        </div>
+        <div class="form-group">
+            <label for="confirmedPassword"> Bevestig Wachtwoord</label>
+            <input v-model="confirmedPassword" type="password" class="form-control" id="confirmedPassword" placeholder="Bevestig Wachtwoord">
+        </div>
+        <button v-on:click="register()" type="button" class="btn btn-primary">Registreer</button>
+    </form>
+</div>
+@section scripts{
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+
+<script>
+    var apiUrl = 'https://localhost:5001/api/Accounts/register';
+    var app = new Vue({
+        el: '#app',
+        data:{
+            firstname:"",
+            lastname:"",
+            username:"",
+            DOB:"",
+            email:"",
+            password:"",
+            confirmedPassword:"",
+            error:"",
+            succes:false,
+        },
+        methods:{
+            register: async function (){
+                var self = this;
+                const user = { FirstName: self.firstname, LastName: self.lastname, UserName: self.username, DateOfBirth: self.DOB, Email: self.email, Password: self.password, ConfirmPassword: self.confirmedPassword};
+                self.succes = false;
+                self.error = null;
+                console.log(user);
+                try{
+                    const res = await axios.post(apiUrl,user);
+                    self.succes = true;
+                }
+                catch (err){
+                    console.error( err.message);
+                }
+
+            }
+        }
+
+    })
+
+</script>
+}

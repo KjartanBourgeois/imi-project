@@ -1,0 +1,100 @@
+﻿@page "/recipecategories"
+@inject ICategoryService service;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+
+<h2>RecipeCategories</h2>
+
+<div class="mt-3">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger">
+            @error
+        </div>
+    }
+
+    @if (currentCategory == null)
+    {
+        <RecipeCategoriesList RecipeCategoryListItems="recipeCategoryListItems"
+                          OnAddClick="AddCategory"
+                          OnEditClick="EditCategory"
+                          OnDeleteClick="DeleteCategory">
+        </RecipeCategoriesList>
+    }
+    else
+    {
+        <RecipeCategory Category="currentCategory"
+                    OnSaveClick="SaveCategory"
+                    OnCancelClick="ShowList">
+        </RecipeCategory>
+    }
+</div>
+
+@code {
+    private List<CategoryResponseDto> recipeCategoryListItems = new List<CategoryResponseDto>();
+    private CategoryResponseDto currentCategory;
+    private string error;
+    private string token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowList();
+    }
+
+    public async Task ShowList()
+    {
+        var result = await service.GetAllCategories();
+        recipeCategoryListItems = result.ToList();
+        this.currentCategory = null;
+    }
+
+    public async Task AddCategory()
+    {
+        this.currentCategory = new CategoryResponseDto();
+    }
+
+    public async Task EditCategory(CategoryResponseDto item)
+    {
+        this.currentCategory = await service.GetCategory(item.Id);
+    }
+
+    public async Task SaveCategory(CategoryResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        var categoryRequestDto = new CategoryRequestDto();
+        categoryRequestDto.Name = item.Name;
+
+        try
+        {
+            if (currentCategory.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+
+                await service.AddCategory(categoryRequestDto, token);
+            }
+            else
+            {
+                categoryRequestDto.Id = item.Id;
+                await service.UpdateCategory(categoryRequestDto, token);
+            }
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+    public async Task DeleteCategory(CategoryResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        try
+        {
+            await service.DeleteCategory(item.Id, token);
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+}

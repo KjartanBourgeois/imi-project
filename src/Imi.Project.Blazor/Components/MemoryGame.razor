@@ -1,0 +1,129 @@
+﻿@inject MemoryGameService gameService;
+
+<h2>Memory</h2>
+
+<p>Please choose a difficulty level</p>
+
+<select>
+    @foreach (var item in Enum.GetValues(typeof(DifficultyLevel)))
+    {
+        <option value="@item">@item</option>
+    }
+
+</select>
+<br />
+
+<button @onclick="@(() => pressedPlay = true)" class="btn btn-primary mb-4">Play Memory</button>
+<br />
+
+
+@if (pressedPlay)
+{
+    <h4>Stats</h4>
+    <p> Wrong Combinations : @stats.WrongCombo</p>
+    <p> Matches Found : @matchesFound</p>
+
+    <div class="gameboard">
+
+        @foreach (var card in board.PlayCards)
+        {
+            <div>
+                <button class="hiddenCardSide" type="button" @onclick="@(() => ClickedCombo(card))" style="padding:10px; width:150px; height:150px; background-color:black;">
+                    <img style="width:150px; height:150px; margin:-10px;" src="@card.ImageUrl" hidden="@(!clickCards.Contains(card))">
+                </button>
+            </div>
+        }
+
+    </div>
+
+}
+
+
+
+@code {
+    bool pressedPlay = false;
+    DifficultyLevel difficultyLevel;
+    GameBoard board = new GameBoard();
+    Stats stats = new Stats();
+    int matchesFound = 0;
+    List<RecipeCard> clickCards = new List<RecipeCard>();
+    RecipeCard firstCard = null;
+    RecipeCard secondCard = null;
+    bool isChecked = false;
+
+    protected override void OnInitialized()
+    {
+
+        SetUp();
+
+    }
+
+    private void SetUp()
+    {
+        board.NumberOfRecipeCards = 20;
+        GetCards();
+        board.RandomiseCards();
+        matchesFound = 0;
+        stats.WrongCombo = 0;
+
+    }
+
+    private async void GetCards()
+    {
+        var gameCards = await gameService.GetRecipeCards(difficultyLevel);
+        board.RecipeCards = gameCards;
+
+    }
+
+    private void ClickedCombo(RecipeCard card)
+    {
+        if (clickCards.Count == 2) return;
+        clickCards.Add(card);
+
+        Task.Delay(1000).ContinueWith((c) =>
+        {
+            if (clickCards.Count == 2)
+            {
+                CheckCards();
+            }
+
+            if (isChecked)
+            {
+                clickCards.Clear();
+                isChecked = false;
+            }
+
+
+        });
+
+
+    }
+
+    private void CheckCards()
+    {
+        firstCard = clickCards[0];
+        secondCard = clickCards[1];
+        if ((firstCard.Id == secondCard.Id) && (firstCard.Number != secondCard.Number))
+        {
+            //Match is found reset for next turn
+            board.PlayCards.RemoveAll(x => x.Id.Equals(firstCard.Id));
+            board.PlayCards.RemoveAll(x => x.Id.Equals(secondCard.Id));
+            firstCard = null;
+            secondCard = null;
+            matchesFound++;
+            if (matchesFound == 10)
+            {
+                SetUp();
+            }
+            isChecked = true;
+
+        }
+        else
+        {
+            stats.WrongCombo++;
+            isChecked = true;
+        }
+
+
+    }
+}

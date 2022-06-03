@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Coctails Page";
+}
+<div class="text-center my-5">
+    <h2>Cocktails</h2>
+</div>
+
+
+<div id="app" class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info" v-if="feedback">
+            {{feedback}}
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label class="font-weight-bold">Search Cocktail :</label>
+        <input class="form-control" v-model="searchTerm"/>
+        <button class="btn btn-primary my-3" v-on:click="fetchCocktails()">Search</button>
+    </div>
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Cocktail Glass</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="drink in drinks">
+                <th>{{drink.strDrink}}</th>
+                <td>{{drink.strCategory}}</td>
+                <td>{{drink.strGlass}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" v-on:click="getDrinkInfo(drink.idDrink)">More info</button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3" v-if="selectedDrink">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" v-bind:src="selectedDrink[0].strDrinkThumb" alt="Image of the selected drink">
+            <div class="card-body">
+                <h5 class="card-title">Name : {{selectedDrink[0].strDrink}}</h5>
+                <h5 class="card-title">Category : {{selectedDrink[0].strCategory}}</h5>
+                <h5 class="card-title">IBA : {{selectedDrink[0].strIBA}}</h5>
+                <h5 class="card-title">Alcoholic : {{selectedDrink[0].strAlcoholic}}</h5>
+                <h5 class="card-title">Glass : {{selectedDrink[0].strGlass}}</h5>
+                <h5 class="card-title">Last Modified : {{selectedDrink[0].dateModified}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+
+<script>
+    var apiAllUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    var apiOneUrl = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
+    var app = new Vue({
+        el: '#app',
+        data:{
+            cocktails: [],
+            drinks: [],
+            searchTerm: "",
+            selectedDrink: null,
+            feedback:"",
+        },
+        methods:{
+            fetchCocktails: function(){
+                var self = this;
+                if(self.searchTerm == ""){
+                    return self.feedback = "There was no searchterm, please try again";
+                };
+                var url = `${apiAllUrl}${self.searchTerm}`;
+                return axios.get(url)
+                    .then(res => {
+                        self.cocktails = res.data;
+                        self.drinks = res.data.drinks;
+                    });
+            },
+            getDrinkInfo: async function (drinkId){
+                var self = this;
+                var url = `${apiOneUrl}${drinkId}`;
+                console.log(url);
+                return await axios.get(url)
+                    .then(res => {
+                        self.selectedDrink = res.data.drinks;
+                    });
+            },
+        }
+
+    });
+
+</script>
+}

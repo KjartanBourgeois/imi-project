@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.RegisterPage"
+             Title="Registreer"
+             BackgroundColor="{StaticResource ColorSecundary}">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" Style="{StaticResource MainStackLayout}">
+            <Label Text="Gebruikersnaam" TextColor="{StaticResource ColorAccent}"></Label>
+            <Entry Text="{Binding UserName}" Placeholder="Gebruikersnaam"></Entry>
+            <Label Text="Geboortedatum" TextColor="{StaticResource ColorAccent}"></Label>
+            <DatePicker Date="{Binding DateOfBirth}" x:Name="dtpDoB" MaximumDate="01/01/2003"></DatePicker>
+            <Label Text="Emailadres" TextColor="{StaticResource ColorAccent}"></Label>
+            <Entry Text="{Binding EmailAddress}" Placeholder="Emailadres" Keyboard="Email"></Entry>
+            <Label Text="Wachtwoord" TextColor="{StaticResource ColorAccent}"></Label>
+            <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Wachtwoord"></Entry>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Terms}" x:Name="chkTerms"></CheckBox>
+                <Label Text="Ik accepteer alle voorwaarden" VerticalOptions="Center" TextColor="{StaticResource ColorAccent}"></Label>
+            </StackLayout>
+            <Button Command="{Binding Register}" x:Name="btnRegister" Text="Registreer" Style="{StaticResource SecundaryButton}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

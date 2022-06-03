@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
+             x:Class="Imi.Project.Mobile.Pages.RecipePage"
+             BackgroundColor="{StaticResource ColorPrimary}"
+             Title="{Binding PageTitle}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Style="{StaticResource MainStackLayout}">
+                <StackLayout Padding="0,20,0,0">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                        <rating:SfRating ItemCount="5" Value="5" Precision="Standard" x:Name="rating" ItemSize="30" >
+                            <rating:SfRating.RatingSettings>
+                                <rating:SfRatingSettings RatedFill="{StaticResource ColorAccent}" UnRatedFill="White" RatedStroke="Black" UnRatedStroke="Black"   />
+                            </rating:SfRating.RatingSettings>
+                        </rating:SfRating>
+                    </StackLayout>
+                    <StackLayout>
+                        <Frame CornerRadius="35" Margin="30,5,30,0" HeightRequest="250">
+                            <Image Source="{Binding ImageSource}" Aspect="AspectFill" Margin="-20"></Image>
+                        </Frame>
+                    </StackLayout>
+                    <FlexLayout Direction="Row" Padding="0,15,0,0"  HeightRequest="70" AlignContent="Center" JustifyContent="Center">
+                        <Button Text="&#xf004;" FontSize="50" FontFamily="FontAwesomeSolid" TextColor="{StaticResource ColorSecundary}" BackgroundColor="{StaticResource ColorPrimary}"></Button>
+                        <Button Text="&#xf030;" FontSize="50" FontFamily="FontAwesomeSolid" TextColor="{StaticResource ColorSecundary}" BackgroundColor="{StaticResource ColorPrimary}"></Button>
+                        <Button Command="{Binding ShareRecipe}" Text="&#xf1e0;" FontSize="50" FontFamily="FontAwesomeSolid" TextColor="{StaticResource ColorSecundary}" BackgroundColor="{StaticResource ColorPrimary}"></Button>
+                        <Button Text="&#xf164;" FontSize="50" FontFamily="FontAwesomeSolid" TextColor="{StaticResource ColorSecundary}" BackgroundColor="{StaticResource ColorPrimary}"></Button>
+                    </FlexLayout>
+                </StackLayout>
+                <StackLayout>
+                    <StackLayout Margin="0,20">
+                        <FlexLayout Direction="Row">
+                            <Label Text="{Binding NumberOfPersons}" TextColor="Black" TextTransform="Uppercase" FontAttributes="Bold" FontSize="Medium"></Label>
+                        </FlexLayout>
+                    </StackLayout>
+                    <StackLayout>
+                        <Label Text="Ingrediënten" TextColor="Black" TextDecorations="Underline" TextTransform="Uppercase" FontAttributes="Bold" FontSize="Medium"></Label>
+                        <Label Text="{Binding Ingredients}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="Black" FontSize="20" Margin="10">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Ingredients}"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout>
+                        <Label Text="Instructies" TextColor="Black" TextDecorations="Underline" TextTransform="Uppercase" FontAttributes="Bold" FontSize="Medium"></Label>
+                        <Label Text="{Binding Instructions}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" TextColor="Black" FontSize="20" Margin="10">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Instructions}"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

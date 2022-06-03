@@ -1,0 +1,50 @@
+﻿<Window x:Class="Imi.Project.Wpf.NewRecipe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        mc:Ignorable="d"
+        Title="Nieuw Recept" Height="698" Width="800" Loaded="Window_Loaded" Background="SteelBlue">
+    <StackPanel Margin="40" Width="600" VerticalAlignment="Center">
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label  Content="Naam :"></Label>
+            <TextBox x:Name="txtRecipeName" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Categorie :"></Label>
+            <ComboBox x:Name="cmbCategories" Width="250"></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Keuken :"></Label>
+            <ComboBox x:Name="cmbKitchens" Width="250"></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Thema :"></Label>
+            <ComboBox x:Name="cmbThemes" Width="250"></ComboBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Instructies :"></Label>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtInstruction" Width="250"></TextBox>
+                <Button Click="btnAddInstruction_Click" x:Name="btnAddInstruction" Margin="5,0" Width="30" Content="+" />
+            </StackPanel>
+        </StackPanel>
+        <Border BorderBrush="Black" BorderThickness="1" Width="387">
+            <ListBox x:Name="lstInstructions" Height="134" Margin="-1,0,-1,0" />
+        </Border>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Aantal personen :"></Label>
+            <TextBox x:Name="txtNumberOfPersons" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Afbeelings link :"></Label>
+            <TextBox x:Name="txtImageLink" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="Website link :"></Label>
+            <TextBox x:Name="txtWebsiteLink" Width="250"></TextBox>
+        </StackPanel>
+        <Button Click="btnAddNewRecipe_Click" x:Name="btnAddNewRecipe" Margin="10" Content="Opslaan" Height="30" Width="288" ></Button>
+    </StackPanel>
+</Window>

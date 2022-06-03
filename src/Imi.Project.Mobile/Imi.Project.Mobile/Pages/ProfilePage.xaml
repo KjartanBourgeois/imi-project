@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.ProfilePage"
+             BackgroundColor="{StaticResource ColorPrimary}"
+             xmlns:local="clr-namespace:Imi.Project.Mobile.Extenstions"
+             Title="Mijn Profiel"
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource MainStackLayout}">
+            <StackLayout Padding="40">
+                <Frame Padding="0" CornerRadius="100" HeightRequest="200" WidthRequest="200" HorizontalOptions="Center" IsClippedToBounds="True">
+                    <Image HorizontalOptions="Center" VerticalOptions="Center"  Source="{local:ImageResource Imi.Project.Mobile.Images.profileholder.jpg}"></Image>
+                </Frame>
+            </StackLayout>
+            <StackLayout VerticalOptions="FillAndExpand" Margin="0,30,0,0" Padding="0,30,0,0" BackgroundColor="{StaticResource ColorPrimary}">
+                <Button Command="{Binding GoToFavoritePage}" Text="Mijn favoriete recepten"  Style="{StaticResource PrimaryButton}" Margin="20,5"></Button>
+                <Button Command="{Binding GoToMyPhotosPage}" Text="Mijn Foto's" Style="{StaticResource PrimaryButton}" Margin="20,5"></Button>
+                <Button Command="{Binding GoToSettingsPage}" Text="&#xf013; Instellingen" FontFamily="FontAwesomeSolid" Style="{StaticResource PrimaryButton}" Margin="20,5"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

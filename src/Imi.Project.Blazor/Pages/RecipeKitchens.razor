@@ -1,0 +1,98 @@
+﻿@page "/recipekitchens"
+@inject IKitchenService service;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+
+<h2>RecipeKitchens</h2>
+
+<div class="mt-3">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger">
+            @error
+        </div>
+    }
+
+    @if (currentKitchen == null)
+    {
+        <RecipeKitchensList RecipeKitchenListItems="recipeKitchenListItems"
+                        OnAddClick="AddKitchen"
+                        OnEditClick="EditKitchen"
+                        OnDeleteClick="DeleteKitchen">
+        </RecipeKitchensList>
+    }
+    else
+    {
+        <RecipeKitchen Kitchen="currentKitchen"
+                   OnSaveClick="SaveKitchen"
+                   OnCancelClick="ShowList">
+        </RecipeKitchen>
+    }
+</div>
+
+@code {
+    private List<KitchenResponseDto> recipeKitchenListItems = new List<KitchenResponseDto>();
+    private KitchenResponseDto currentKitchen;
+    private string error;
+    private string token;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ShowList();
+    }
+
+    public async Task ShowList()
+    {
+        var result = await service.GetAllKitchens();
+        recipeKitchenListItems = result.ToList();
+        this.currentKitchen = null;
+    }
+
+    public async Task AddKitchen()
+    {
+        this.currentKitchen = new KitchenResponseDto();
+    }
+
+    public async Task EditKitchen(KitchenResponseDto item)
+    {
+        this.currentKitchen = await service.GetKitchen(item.Id);
+    }
+
+    public async Task SaveKitchen(KitchenResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        var kitchenRequestDto = new KitchenRequestDto();
+        kitchenRequestDto.Name = item.Name;
+        try
+        {
+            if (currentKitchen.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+                await service.AddKitchen(kitchenRequestDto, token);
+            }
+            else
+            {
+                kitchenRequestDto.Id = item.Id;
+                await service.UpdateKitchen(kitchenRequestDto, token);
+            }
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+    public async Task DeleteKitchen(KitchenResponseDto item)
+    {
+        token = await localStorage.GetItemAsync<string>("jwtToken");
+        try
+        {
+            await service.DeleteKitchen(item.Id, token);
+            await this.ShowList();
+        }
+        catch (Exception ex)
+        {
+            this.error = ex.Message;
+        }
+    }
+
+}

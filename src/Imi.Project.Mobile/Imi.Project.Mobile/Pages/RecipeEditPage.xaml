@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.RecipeEditPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource ColorPrimary}">
+    <ContentPage.Content>
+        <ScrollView Style="{StaticResource MainStackLayout}">
+            <StackLayout>
+                <Label Text="Naam" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Entry Text="{Binding RecipeName}" Keyboard="Text" Placeholder="Voe naam toe"></Entry>
+                <Label Text="Aantal Personen" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Entry Text="{Binding NumberOfPersons}" Keyboard="Numeric" Placeholder="Aantal personen"></Entry>
+                <Label Text="Categorie" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Picker ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedCategory}"></Picker>
+                <Label Text="Keuken" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Picker ItemsSource="{Binding Kitchens}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedKitchen}"></Picker>
+                <Label Text="Thema" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Picker ItemsSource="{Binding Themes}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedTheme}"></Picker>
+                <Label Text="Instructie" TextColor="{StaticResource ColorSecundary}"></Label>
+                <StackLayout Orientation="Horizontal">
+                    <Entry Text="{Binding NewInstruction}" Keyboard="Text" Placeholder="Voe instructie toe" HorizontalOptions="Start" WidthRequest="260"></Entry>
+                    <Button Command="{Binding AddNewInstruction}" BackgroundColor="{StaticResource ColorSecundary}" Text="+" HorizontalOptions="End"></Button>
+                </StackLayout>
+                <StackLayout>
+                    <ListView ItemsSource="{Binding Instructions}" SelectionMode="None" SeparatorVisibility="None" BackgroundColor="{StaticResource ColorSecundary}" HeightRequest="250">
+                    </ListView>
+                </StackLayout>
+                <Label Text="Link naar foto" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Entry Text="{Binding ImageLink}" Keyboard="Url" Placeholder="Voe link naar foto toe"></Entry>
+                <Label Text="Link naar de website" TextColor="{StaticResource ColorSecundary}"></Label>
+                <Entry Text="{Binding WebsiteUri}" Keyboard="Url" Placeholder="Voe link naar website toe"></Entry>
+                <Button Command="{Binding SaveRecipe}" BackgroundColor="{StaticResource ColorSecundary}" Text="Opslaan"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

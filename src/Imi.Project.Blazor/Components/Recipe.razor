@@ -1,0 +1,54 @@
+﻿<EditForm Model="@Item" OnValidSubmit="@(e => OnSaveClick.InvokeAsync(Item))">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Title: </label>
+        <InputText id="name" @bind-Value="Item.Name" class="form-control" />
+        <ValidationMessage For="@(() => Item.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label for="category">Category: </label>
+        <InputSelect id="category" @bind-Value="Item.Category.Id" class="form-control">
+            <option value="@Item.Category.Id">@Item.Category.Name</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => Item.Category.Id)" />
+    </div>
+
+    <div class="form-group">
+        <label for="kitchen">Kitchen: </label>
+        <InputSelect id="kitchen" @bind-Value="Item.Kitchen.Id" class="form-control">
+            <option value="@Item.Kitchen.Id">@Item.Kitchen.Name</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => Item.Kitchen.Id)" />
+    </div>
+
+    <div class="form-group">
+        <label for="theme">Theme: </label>
+        <InputSelect id="theme" @bind-Value="Item.Theme.Id" class="form-control">
+            <option value="@Item.Theme.Id">@Item.Theme.Name</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => Item.Theme.Id)" />
+    </div>
+
+    <div class="form-group">
+        <label for="imageLink">Image link: </label>
+        <InputText id="imageLink" @bind-Value="Item.Image" class="form-control" />
+        <ValidationMessage For="@(() => Item.Image)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-warning" @onclick="OnCancelClick">Cancel</button>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public RecipeResponseDto Item { get; set; }
+
+    [Parameter]
+    public EventCallback<RecipeResponseDto> OnSaveClick { get; set; }
+    [Parameter]
+    public EventCallback OnCancelClick { get; set; }
+}

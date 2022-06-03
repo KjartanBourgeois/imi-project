@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:conv="clr-namespace:Imi.Project.Mobile.Converters"
+             x:Class="Imi.Project.Mobile.App">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Converters -->
+            <conv:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConv" />
+
+            <!-- Common Colors -->
+            <Color x:Key="ColorPrimary">#f3f6f4</Color>
+            <Color x:Key="ColorLightGreen">#56D636</Color>
+            <Color x:Key="ColorFluoGreen">#A3ED47</Color>
+            <Color x:Key="ColorSecundary">#278032</Color>
+            <Color x:Key="ColorAccent">#F7EA3E</Color>
+            <Color x:Key="ColorDarkAccent">#C7D636</Color>
+
+            <!-- On Platform Resources -->
+            <OnPlatform x:Key="DefaultThickness" x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0"></On>
+                <On Platform="Android" Value="0"></On>
+                <On Platform="UWP" Value="20"></On>
+            </OnPlatform>
+
+            <OnPlatform x:Key="MainMargin" x:TypeArguments="Thickness">
+                <On Platform="Android" Value="20" />
+                <On Platform="UWP" Value="150,0" />
+            </OnPlatform>
+
+            <Style x:Key="MainStackLayout" TargetType="StackLayout">
+                <Setter Property="Margin" Value="{StaticResource MainMargin}"></Setter>
+            </Style>
+
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorSecundary}"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource ColorAccent}"></Setter>
+            </Style>
+
+            <Style x:Key="SecundaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorAccent}"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource ColorSecundary}"></Setter>
+            </Style>
+
+        </ResourceDictionary>
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackground" Value="#278032"></Setter>
+        </Style>
+    </Application.Resources>
+</Application>

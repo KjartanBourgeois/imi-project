@@ -1,0 +1,28 @@
+﻿@inherits LayoutComponentBase
+
+<div class="sidebar">
+    <NavMenu NavItems="NavItems" />
+</div>
+<div class="container mt-3">
+    @Body
+</div>
+
+@code {
+    public NavItem[] NavItems { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.loadNavItems();
+    }
+    private void loadNavItems()
+    {
+        this.NavItems = new NavItem[] {
+            new NavItem() { Caption = "Login", Href = "login" },
+            new NavItem() { Caption = "Recipes", Href = "recipes" },
+            new NavItem() { Caption = "Recipes Categories", Href = "recipecategories" },
+            new NavItem() { Caption = "Recipes Kitchens", Href = "recipekitchens" },
+            new NavItem() { Caption = "Recipes Themes", Href = "recipethemes" },
+            new NavItem() { Caption = "Memory", Href = "memory" }
+        };
+    }
+}

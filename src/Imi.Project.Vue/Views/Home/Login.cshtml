@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+}
+
+<div id="app">
+    <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input v-model="email" type="email" id="inputEmail" class="form-control m-2" placeholder="Email" required="" autofocus="">
+        <label for="inputPassword" class="sr-only">Wachtwoord</label>
+        <input v-model="password" type="password" id="inputPassword" class="form-control m-2" placeholder="Wachtwoord" required="">
+        <button v-on:click="login()" class="btn btn-lg btn-primary btn-block m-2" type="button">Sign in</button>
+    </form>
+</div>
+@section scripts{
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+
+<script>
+    var apiUrl = 'https://localhost:5001/api/Accounts/login';
+    var app = new Vue({
+        el: '#app',
+        data:{
+            email:"",
+            password:"",
+            succes:false,
+        },
+        methods:{
+            login: async function (){
+                var self = this;
+                const auth = { email: self.email, password: self.password};
+                self.succes = false;
+                self.error = null;
+
+                try{
+                    const res = await axios.post(apiUrl,auth);
+
+                    localStorage.setItem('jwtToken', res.data.jwtToken);
+                    console.log(res.data.jwtToken);
+                    self.succes = true;
+                }
+                catch (err){
+                    console.error( err.message);
+                }
+            }
+
+        }
+
+    });
+
+</script>
+}

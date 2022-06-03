@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "Recipes Page";
+}
+<div class="text-center">
+    <h2>Recepten</h2>
+</div>
+
+
+<div id="app" class="row">
+
+    <div class="col-md-12">
+        <div class="alert alert-info" v-if="feedback">
+            {{feedback}}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div v-for="recipe in recipes" class="card" style="width: 18rem; margin: 2rem">
+            <img class="card-img-top" v-bind:src="recipe.image" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{recipe.name}}</h5>
+                <button class="btn btn-primary" v-on:click="getRecipeDetails(recipe)">Toon Details</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div v-if="currentRecipe">
+            <button class="btn btn-primary my-3" v-on:click="toNewMode()">Nieuw Recept</button>
+            <button class="btn btn-info my-3" v-on:click="toEditMode()">Bewerk Recept</button>
+            <button class="btn btn-dark my-3" v-on:click="toReadMode()">Stop met bewerken</button>
+            <br />
+            <label class="font-weight-bold">Naam</label>
+            <input class="form-control" v-model="currentRecipe.name" v-bind:readonly="isReadOnly" />
+            <label class="font-weight-bold my-3">Categorie :</label>
+            <select class="form-select" v-model="selectedCategory" v-bind:disabled="isReadOnly">
+                <option v-for="category in categories" v-bind:value="category">{{category.name}}</option>
+            </select> <br />
+            <label class="font-weight-bold">Keuken :</label>
+            <select class="form-select" v-model="selectedKitchen" v-bind:disabled="isReadOnly">
+                <option v-for="kitchen in kitchens" v-bind:value="kitchen">{{kitchen.name}}</option>
+            </select> <br />
+            <label class="font-weight-bold">Thema :</label>
+            <select class="form-select" v-model="selectedTheme" v-bind:disabled="isReadOnly">
+                <option v-for="theme in themes" v-bind:value="theme">{{theme.name}}</option>
+            </select> <br />
+            <label class="font-weight-bold">Aantal personen</label>
+            <input class="form-control" v-model="currentRecipe.numberOfPersons" v-bind:readonly="isReadOnly" />
+            <label class="font-weight-bold">Afbeeldingslink</label>
+            <input class="form-control" v-model="currentRecipe.image" v-bind:readonly="isReadOnly" />
+            <label class="font-weight-bold">Websitelink</label>
+            <input class="form-control" v-model="currentRecipe.websiteLink" v-bind:readonly="isReadOnly" />
+            <form v-bind:action="currentRecipe.websiteLink" target="_blank">
+                <button class="btn btn-primary mt-3">Ga naar de website</button>
+            </form>
+            <button class="btn btn-primary mt-3" v-on:click="createRecipe()">Voeg nieuw recept toe</button>
+            <button class="btn btn-warning mt-3" v-bind:disabled="isReadOnly" v-on:click="updateRecipe()">Update Recept</button>
+            <button class="btn btn-danger mt-3" v-on:click.prevent="deleteRecipe()" v-bind:disabled="isNew">Verwijder Recept</button>
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+
+<script>
+    var apiUrl = 'https://localhost:5001/api';
+    const token = localStorage.getItem('jwtToken');
+    const config = {headers: { Authorization: `Bearer ${token}` }};
+    var app = new Vue({
+        el: '#app',
+        data:{
+            recipes: [],
+            categories: [],
+            kitchens: [],
+            themes: [],
+            currentRecipe: null,
+            currentCategory: null,
+            currentKitchen: null,
+            currentTheme: null,
+            selectedCategory: null,
+            selectedKitchen: null,
+            selectedTheme: null,
+            feedback:"",
+            isReadOnly: true,
+            isNew: false
+        },
+        created: function(){
+            var self =this;
+            self.fetchData();
+        },
+        methods:{
+            fetchData: function(){
+                var self = this;
+                axios.get(`${apiUrl}/Recipes`, config)
+                    .then(res => {
+                        self.recipes = res.data;
+                    });
+                axios.get(`${apiUrl}/Categories`, config)
+                    .then(res => {
+                        self.categories = res.data;
+                    });
+                axios.get(`${apiUrl}/Kitchens`, config)
+                    .then(res => {
+                        self.kitchens = res.data;
+                    });
+                axios.get(`${apiUrl}/Themes`, config)
+                    .then(res => {
+                        self.themes = res.data;
+                    });
+            },
+
+            getRecipeDetails: function(recipe){
+                var self = this;
+                self.currentRecipe = recipe;
+                self.currentCategory = recipe.category;
+                self.currentKitchen = recipe.kitchen;
+                self.currenTheme = recipe.theme;
+                self.selectedCategory = self.currentCategory;
+                self.selectedKitchen = self.currentKitchen;
+                self.selectedTheme = self.currenTheme;
+                window.scrollTo(0,0);
+            },
+
+            toEditMode: function(){
+                var self = this;
+                self.isReadOnly = false
+            },
+
+            toReadMode: function(){
+                var self = this;
+                self.isReadOnly = true
+            },
+
+            toNewMode: function(){
+                var self = this;
+                self.isReadOnly = false;
+                self.isNew = true;
+                self.currentRecipe = {};
+            },
+
+            updateRecipe: async function(){
+                var self = this;
+                var dto = {
+                    Id: self.currentRecipe.id,
+                    Name: self.currentRecipe.name,
+                    CategoryId: self.currentRecipe.category.id,
+                    KitchenId: self.currentRecipe.kitchen.id,
+                    ThemeId: self.currentRecipe.theme.id,
+                    Instructions: self.currentRecipe.instructions,
+                    Image: self.currentRecipe.image,
+                    WebsiteLink: self.currentRecipe.websiteLink,
+                    NumberOfPersons: parseInt(self.currentRecipe.numberOfPersons)
+                };
+                console.log(dto)
+                await axios.put(apiUrl, dto, config)
+                    .then(function(response){
+                        self.feedback = `Recept ${self.currentRecipe.name} is aangepast`;
+                    })
+                    .catch(function (error){
+                        console.log(error.response);
+                    })
+                    .then(function() {
+                        self.isReadOnly = true;
+                        setTimeout(function () {self.feedback = null; }, 3000);
+                    });
+            },
+
+            deleteRecipe: async function(){
+                var self = this;
+                var url = `${apiUrl}/${self.currentRecipe.id}`;
+                console.log(url);
+                await axios.delete(url, config)
+                      .then(function(response){
+                        self.feedback = `recept ${self.currentrecipe.name} is verwijderd`
+                      })
+                      .catch(function (error){
+                        console.log(error.response);
+                      })
+                      .then(function() {
+                        self.isreadonly = true;
+                        settimeout(function () {self.feedback = null; }, 3000);
+                    });
+            },
+
+            createRecipe: async function(){
+                var self = this;
+                var url = `${apiUrl}/Recipes`;
+                var dto = {
+                    Id: self.currentRecipe.id,
+                    Name: self.currentRecipe.name,
+                    CategoryId: self.selectedCategory.id,
+                    KitchenId: self.selectedKitchen.id,
+                    ThemeId: self.selectedTheme.id,
+                    Instructions: "",
+                    Image: self.currentRecipe.image,
+                    WebsiteLink: self.currentRecipe.websiteLink,
+                    NumberOfPersons: parseInt(self.currentRecipe.numberOfPersons)
+                };
+                await axios.post(url, dto, config)
+                    .then(function(response){
+                        self.feedback = `Recept ${self.currentRecipe.name} is aangemaakt`;
+                    })
+                    .catch(function (error){
+                        console.log(error.response);
+                    });
+            },
+
+
+        }
+
+    });
+
+</script>
+}

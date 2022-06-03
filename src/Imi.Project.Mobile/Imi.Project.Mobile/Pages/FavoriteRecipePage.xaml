@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.Pages.FavoriteRecipePage"
+             Title="Favorite Recepten">
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource MainStackLayout}">
+            <CollectionView ItemsSource="{Binding recipes}" ItemsLayout="VerticalGrid, 2">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10" WidthRequest="150" HeightRequest="200" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="btnRecipe" Clicked="btnRecipe_Clicked" Grid.Row="0" Text="{Binding Name}" Style="{StaticResource PrimaryButton}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

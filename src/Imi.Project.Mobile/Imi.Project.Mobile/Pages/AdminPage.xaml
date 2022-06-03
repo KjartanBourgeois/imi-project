@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:bhv="clr-namespace:Imi.Project.Mobile.Behaviors"
+             x:Class="Imi.Project.Mobile.Pages.AdminPage"
+             x:Name="page"
+             Title="Admin"
+              BackgroundColor="{StaticResource ColorPrimary}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Recept Toevoegen" Command="{Binding AddNewRecipe}"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource MainStackLayout}">
+            <ListView ItemsSource="{Binding Recipes}" RowHeight="230" Margin="10" SeparatorVisibility="None" HasUnevenRows="False">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Command="{Binding BindingContext.OpenRecipeEditPage, Source={x:Reference page}}" Text="Bewerk" CommandParameter="{Binding .}"></MenuItem>
+                                <MenuItem Command="{Binding BindingContext.Delete, Source={x:Reference page}}" Text="Verwijder" CommandParameter="{Binding .}" IsDestructive="True"></MenuItem>
+                            </ViewCell.ContextActions>
+                            <StackLayout WidthRequest="50">
+                                <Label Text="{Binding Name, Mode=OneWay}" FontSize="20" HorizontalOptions="Center" TextColor="{StaticResource ColorSecundary}" Margin="10" />
+                                <Frame CornerRadius="35" BackgroundColor="{StaticResource ColorSecundary}" HeightRequest="150" Margin="50,0">
+                                    <StackLayout>
+                                        <Image Source="{Binding Image}" Aspect="AspectFill" Margin="-20"></Image>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

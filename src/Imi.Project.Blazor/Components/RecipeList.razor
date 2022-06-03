@@ -1,0 +1,49 @@
+﻿
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Number of persons</th>
+            <th>Category</th>
+            <th>Kitchen</th>
+            <th>Theme</th>
+            <th>Image</th>
+            <th>Website</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in RecipeListItems)
+        {
+            <tr>
+                <td><button class="btn btn-warning" @onclick="e => OnEditClick.InvokeAsync(item)">Edit</button></td>
+                <td class="w-25">@item.Name</td>
+                <td>@item.NumberOfPersons</td>
+                <td>@item.Category.Name</td>
+                <td>@item.Kitchen.Name</td>
+                <td>@item.Theme.Name</td>
+                <td class="w-25">
+                    <img src="@item.Image" alt="Image of recipe @item.Name" class="img-fluid img-thumbnail">
+                </td>
+                <td>
+                    <a href="@item.WebsiteLink" target="_blank" class="btn btn-primary">Go to website</a>
+                </td>
+                <td><button class="btn btn-danger" @onclick="e => OnDeleteClick.InvokeAsync(item)">Delete</button></td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter]
+    public IEnumerable<RecipeResponseDto> RecipeListItems { get; set; }
+
+    [Parameter]
+    public EventCallback<RecipeResponseDto> OnEditClick { get; set; }
+
+    [Parameter]
+    public EventCallback<RecipeResponseDto> OnDeleteClick { get; set; }
+}

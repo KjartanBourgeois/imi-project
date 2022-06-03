@@ -1,0 +1,34 @@
+﻿@using Imi.Project.Blazor.Services.Api;
+@inject LoginService loginService;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+<div>
+    <form class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+        <label>Email</label>
+        <input @bind="email" type="email" id="inputEmail" class="form-control m-2" placeholder="Super.Admin@user.be" required="" autofocus="">
+        <label>Password</label>
+        <input @bind="password" type="password" id="inputPassword" class="form-control m-2" placeholder="Test123?" required="">
+        <button @onclick="() => Login()" class="btn btn-lg btn-primary btn-block m-2" type="button">Sign in</button>
+    </form>
+
+    @if (succes == true)
+    {
+        <h2>Login Succesfull</h2>
+    }
+</div>
+
+@code {
+    string email;
+    string password;
+    bool succes;
+
+    private async void Login()
+    {
+        var result = await loginService.Login(email, password);
+        if (result != null)
+        {
+            succes = true;
+        }
+        await localStorage.SetItemAsync("jwtToken", result.JwtToken);
+    }
+}
